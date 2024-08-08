@@ -1,3 +1,7 @@
+
+
+
+
 function getComputerchoice() {
     let num = Math.random();
     console.log(num);
@@ -28,32 +32,67 @@ function getHumanchoice() {
 }
 
 function playRound(humanChoice, computerChoice) {
+    const div = document.querySelector('#div');
+    div.innerHTML="";
+    const won = document.createElement("div");
+    const result = document.createElement('div');
+
     if (humanChoice == "rock" && computerChoice == "scissors" || humanChoice == "paper" && computerChoice == "rock" || humanChoice == "scissors"
         && computerChoice == "paper") {
         humanScore++;
-        console.log(humanChoice + " beats" + computerChoice);
-        console.log("you won this round");
+
+        won.textContent = `${humanChoice} beats ${computerChoice} \n`;
+    
+        div.appendChild(won);
+
+
+        result.textContent = " you won this round";
+        result.setAttribute("style","color:green;")
+        div.appendChild(result);
+
     }
     else if (humanChoice == computerChoice) {
-        console.log("Draw!!!");
+     
+        const draw = document.createElement('div');
+        draw.textContent = " DRAW!!! ";
+        div.appendChild(draw);
     }
     else {
         computerScore++;
-        console.log(computerChoice + " beats " + humanChoice);
-        console.log("you lost this round");
+        won.textContent = `${computerChoice} beats ${humanChoice} \n`;
+        div.appendChild(won);
+
+        result.textContent = " you lost this round";
+        result.setAttribute("style","color:red;")
+        div.appendChild(result);
+
     }
+    const score = document.createElement('div');
+    score.textContent = `Human Score: ${humanScore} \n Computer Score: ${computerScore}`
+    score.setAttribute('style','font-weight:bold')
+    div.appendChild(score);
 
 }
 
 let humanScore = 0;
 let computerScore = 0;
 
-//playing 5 times
-for (let i = 0; i < 5; i++) {
-    let computer = getComputerchoice();
-    let human = getHumanchoice();
-    playRound(human, computer);
-}
+const btns = document.querySelectorAll("button");
 
-console.log("Human Score: " + humanScore);
-console.log("Computer Score: " + computerScore);
+btns.forEach((button) => {
+    button.addEventListener('click', () => {
+        if (humanScore < 5 && computerScore < 5) {
+            playRound(button.id, getComputerchoice())
+        }
+        else{
+            const div = document.querySelector('#div');
+            const winner=document.createElement('div');
+            winner.textContent=(humanScore==5)? "You won" : "You Lost";
+            winner.setAttribute("style","font-weight:bold; color:gold ;margin-top:10px;margin-left:10px")
+            div.appendChild(winner);
+            alert("start a new round");
+        }
+    });
+})
+console.log(humanScore);
+
